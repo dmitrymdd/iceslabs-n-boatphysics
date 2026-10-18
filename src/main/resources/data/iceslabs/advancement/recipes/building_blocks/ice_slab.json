@@ -14,7 +14,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "iceslabs:ice_slab"
+        "recipes": "iceslabs:ice_slab"
       }
     }
   },
