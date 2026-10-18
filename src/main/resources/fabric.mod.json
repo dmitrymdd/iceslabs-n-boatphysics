@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "iceslabs",
+	"version": "${version}",
+	"name": "Ice Slabs & Boat Physics",
+	"description": "Adds ice, packed ice and blue ice slabs. They are as slippery as the full blocks, and boats can climb onto them.",
+	"authors": [
+		"dmitry.mdd"
+	],
+	"contact": {
+		"homepage": "https://github.com/dmitrymdd/iceslabs-n-boatphysics",
+		"sources": "https://github.com/dmitrymdd/iceslabs-n-boatphysics",
+		"issues": "https://github.com/dmitrymdd/iceslabs-n-boatphysics/issues"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/iceslabs/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"io.github.dmitrymdd.iceslabs.IceSlabs"
+		],
+		"client": [
+			"io.github.dmitrymdd.iceslabs.client.IceSlabsClient"
+		]
+	},
+	"mixins": [
+		"iceslabs.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~1.21.11",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}

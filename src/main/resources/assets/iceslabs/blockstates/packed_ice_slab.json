@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "iceslabs:block/packed_ice_slab"
+    },
+    "type=top": {
+      "model": "iceslabs:block/packed_ice_slab_top"
+    },
+    "type=double": {
+      "model": "iceslabs:block/packed_ice_slab_double"
+    }
+  }
+}

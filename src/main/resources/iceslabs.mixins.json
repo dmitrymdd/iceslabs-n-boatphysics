@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "io.github.dmitrymdd.iceslabs.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"BoatStepUpMixin",
+		"IceSlabFrictionMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
