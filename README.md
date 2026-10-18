@@ -28,7 +28,7 @@ The jar ends up in `build/libs/` (ignore the `-sources.jar`).
 
 ## Releasing
 
-Pushing a tag like `v1.1.0+1.21.11` makes GitHub Actions build the mod and publish a release with the jar.
+Pushing a tag like `v1.1.0+26.3` makes GitHub Actions build the mod and publish a release with the jar.
 
 ## License
 

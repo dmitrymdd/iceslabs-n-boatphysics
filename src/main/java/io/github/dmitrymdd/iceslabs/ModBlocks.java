@@ -1,59 +1,58 @@
 package io.github.dmitrymdd.iceslabs;
 
 import io.github.dmitrymdd.iceslabs.block.IceSlabBlock;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.Identifier;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
 
 import java.util.function.Function;
 
 public final class ModBlocks {
 
-	// Strength, slipperiness and sound mirror the vanilla full blocks.
-	// MapColor.PALE_PURPLE is the ice map colour in Yarn (MapColor.ICE in Mojang mappings).
+	// Strength, friction and sound mirror the vanilla full blocks.
 	public static final Block ICE_SLAB = register("ice_slab", IceSlabBlock::new,
-			AbstractBlock.Settings.create()
-					.mapColor(MapColor.PALE_PURPLE)
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.ICE)
 					.strength(0.5f)
-					.slipperiness(0.98f)
-					.sounds(BlockSoundGroup.GLASS)
-					.nonOpaque());
+					.friction(0.98f)
+					.sound(SoundType.GLASS)
+					.noOcclusion());
 
 	public static final Block PACKED_ICE_SLAB = register("packed_ice_slab", SlabBlock::new,
-			AbstractBlock.Settings.create()
-					.mapColor(MapColor.PALE_PURPLE)
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.ICE)
 					.strength(0.5f)
-					.slipperiness(0.98f)
-					.sounds(BlockSoundGroup.GLASS));
+					.friction(0.98f)
+					.sound(SoundType.GLASS));
 
 	public static final Block BLUE_ICE_SLAB = register("blue_ice_slab", SlabBlock::new,
-			AbstractBlock.Settings.create()
-					.mapColor(MapColor.PALE_PURPLE)
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.ICE)
 					.strength(2.8f)
-					.slipperiness(0.989f)
-					.sounds(BlockSoundGroup.GLASS));
+					.friction(0.989f)
+					.sound(SoundType.GLASS));
 
 	private ModBlocks() {
 	}
 
 	/** Called from the mod initializer; loading this class registers the blocks. */
 	public static void init() {
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(entries -> {
-			entries.add(ICE_SLAB);
-			entries.add(PACKED_ICE_SLAB);
-			entries.add(BLUE_ICE_SLAB);
+		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.BUILDING_BLOCKS).register(output -> {
+			output.accept(ICE_SLAB.asItem());
+			output.accept(PACKED_ICE_SLAB.asItem());
+			output.accept(BLUE_ICE_SLAB.asItem());
 		});
 	}
 
@@ -62,17 +61,17 @@ public final class ModBlocks {
 		return block == ICE_SLAB || block == PACKED_ICE_SLAB || block == BLUE_ICE_SLAB;
 	}
 
-	private static Block register(String name, Function<AbstractBlock.Settings, Block> factory,
-								  AbstractBlock.Settings settings) {
-		Identifier id = Identifier.of(IceSlabs.MOD_ID, name);
+	private static Block register(String name, Function<BlockBehaviour.Properties, Block> factory,
+								  BlockBehaviour.Properties properties) {
+		Identifier id = Identifier.fromNamespaceAndPath(IceSlabs.MOD_ID, name);
 
-		RegistryKey<Block> blockKey = RegistryKey.of(RegistryKeys.BLOCK, id);
-		Block block = Registry.register(Registries.BLOCK, blockKey, factory.apply(settings.registryKey(blockKey)));
+		ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK, id);
+		Block block = Registry.register(BuiltInRegistries.BLOCK, blockKey, factory.apply(properties.setId(blockKey)));
 
-		// useBlockPrefixedTranslationKey(): the item uses the block.iceslabs.* name, so no item.* lang keys are needed
-		RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, id);
-		Registry.register(Registries.ITEM, itemKey,
-				new BlockItem(block, new Item.Settings().registryKey(itemKey).useBlockPrefixedTranslationKey()));
+		// useBlockDescriptionPrefix(): the item uses the block.iceslabs.* name, so no item.* lang keys are needed
+		ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, id);
+		Registry.register(BuiltInRegistries.ITEM, itemKey,
+				new BlockItem(block, new Item.Properties().setId(itemKey).useBlockDescriptionPrefix()));
 
 		return block;
 	}
